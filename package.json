@@ -10,8 +10,13 @@
     "sizeof": "bin/sizeof"
   },
   "scripts": {
+    "prepare": "yarn build",
     "build": "tsc"
   },
+  "files": [
+    "bin/*",
+    "lib/*"
+  ],
   "dependencies": {
     "@types/minimatch": "^3.0.3",
     "@types/node": "^10.11.4",
