@@ -7,4 +7,4 @@ cache:
     - node_modules
 after_success:
   - codecov
-  - codacy-coverage
+  - cat ./coverage/lcov.info | codacy-coverage
