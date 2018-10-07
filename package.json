@@ -13,7 +13,8 @@
   "scripts": {
     "prepare": "yarn build",
     "build": "tsc",
-    "test": "jest"
+    "test": "jest",
+    "lint": "tslint --project ."
   },
   "files": [
     "bin/**/*",
