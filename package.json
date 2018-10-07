@@ -3,7 +3,6 @@
   "version": "1.0.7",
   "description": "Calculate the size of files/directories",
   "main": "lib/index.js",
-  "types": "index.d.ts",
   "repository": "dotconnor/sized",
   "author": "Connor Love <connor@dotconnor.com>",
   "license": "MIT",
