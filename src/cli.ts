@@ -3,7 +3,7 @@ const settings = require("../package.json"); // tslint:disable-line
 import ora from "ora";
 import { cpus } from "os";
 import * as path from "path";
-import sizeOf from "./index";
+import sized from "./index";
 import { debounce, humanFileSize, throttled } from "./utils";
 require("./win");  // tslint:disable-line
 const argv = process.argv.slice(2);
@@ -22,8 +22,8 @@ const args = [];
 let dir = "";
 function printHelp() {
   console.log();
-  console.log(`\x1b[36msize-of\x1b[0m ${settings.version}`);
-  console.log(`  usage: sizeof [options] [path]`);
+  console.log(`\x1b[36msized\x1b[0m ${settings.version}`);
+  console.log(`  usage: sized [options] [path]`);
   console.log(`  options:`);
   console.log();
   console.log(`    --h       \tPrints this screen.`);
@@ -84,14 +84,14 @@ if (!dir) {
     spinner.info(`Limited to ${cpus().length / 2} tasks at a time.`);
   }
   const start = Date.now();
-  sizeOf(dir, options, cb).then((data) => {
+  sized(dir, options, cb).then((data) => {
     const time = Date.now() - start;
     spinner.stop();
     const totalSize = data.reduce((a, b) => {
       return a + b.size;
     }, 0);
     console.log();
-    console.log(`\x1b[36msize-of\x1b[0m - \x1b[33m${path.resolve(dir)}\x1b[0m`);
+    console.log(`\x1b[36msized\x1b[0m - \x1b[33m${path.resolve(dir)}\x1b[0m`);
     console.log(`  Total Size:   \x1b[32m${humanFileSize(totalSize)}\x1b[0m`);
     console.log(`  Total Files:  \x1b[34m\x1b[1m${data.length}\x1b[0m`);
     console.log(`  Took:         \x1b[31m\x1b[1m${time}ms\x1b[0m`);

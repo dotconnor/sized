@@ -31,7 +31,7 @@ async function sizeOfDir(dir: string, options: IOptions, cb: (size: number) => v
   blocks = blocks.concat(flattenDeep(t));
   return blocks;
 }
-async function sizeOf(dir: string, options: IOptions, cb: (size: number) => void): Promise<IBlock[]> {
+async function sized(dir: string, options: IOptions, cb: (size: number) => void): Promise<IBlock[]> {
   let blocks: IBlock[] = [];
   const stat = await lstatPromised(dir);
   if (stat.isDirectory()) {
@@ -44,4 +44,4 @@ async function sizeOf(dir: string, options: IOptions, cb: (size: number) => void
   }
   return blocks;
 }
-export = sizeOf;
+export = sized;
