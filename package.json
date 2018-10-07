@@ -28,7 +28,8 @@
     "@types/p-limit": "^2.0.0",
     "minimatch": "^3.0.4",
     "ora": "^3.0.0",
-    "p-limit": "^2.0.0"
+    "p-limit": "^2.0.0",
+    "update-notifier": "^2.5.0"
   },
   "devDependencies": {
     "@types/jest": "^23.3.3",
