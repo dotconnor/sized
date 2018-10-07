@@ -6,6 +6,6 @@ cache:
   directories:
     - node_modules
 scripts:
-  - npm install codecov -g
+  - yarn global add codecov
 after_success:
   - codecov
