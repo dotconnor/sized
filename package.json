@@ -21,7 +21,8 @@
     "clean": "rm -rf ./lib/*",
     "build": "yarn clean && tsc",
     "test": "jest",
-    "lint": "tslint --project ."
+    "lint": "tslint --project .",
+    "postpublish": "git push origin --tags"
   },
   "files": [
     "bin/**/*",
