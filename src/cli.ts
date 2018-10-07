@@ -4,7 +4,7 @@ import ora from "ora";
 import { cpus } from "os";
 import * as path from "path";
 import sized from "./index";
-import { debounce, humanFileSize, throttled } from "./utils";
+import { humanFileSize, throttled } from "./utils";
 require("./win");  // tslint:disable-line
 const argv = process.argv.slice(2);
 const toggles = [

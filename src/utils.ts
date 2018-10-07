@@ -11,16 +11,6 @@ export function lstatPromised(path: PathLike): Promise<Stats> {
   });
 }
 
-export function accessPromised(path: PathLike) {
-  return new Promise((resolve, reject) => {
-    access(path, (err) => {
-      if (err) {
-        return reject(err);
-      }
-      return resolve();
-    });
-  });
-}
 export function readdirPromised(path: PathLike): Promise<string[]> {
   return new Promise((resolve, reject) => {
     readdir(path, (err, data) => {
@@ -52,43 +42,6 @@ export function flattenDeep(arr: any[]): any[] {
 }
 
 export type Procedure = (...args: any[]) => void;
-
-export interface IDebounceOptions {
-  isImmediate: boolean;
-}
-
-export function debounce<F extends Procedure>(
-  func: F,
-  waitMilliseconds = 50,
-  options: IDebounceOptions = {
-    isImmediate: false,
-  },
-): F {
-  let timeoutId: NodeJS.Timer | undefined;
-
-  return function(this: any, ...args: any[]) {
-    const context = this;
-
-    function doLater() {
-      timeoutId = undefined;
-      if (!options.isImmediate) {
-        func.apply(context, args);
-      }
-    }
-
-    const shouldCallNow = options.isImmediate && timeoutId === undefined;
-
-    if (timeoutId !== undefined) {
-      clearTimeout(timeoutId);
-    }
-
-    timeoutId = setTimeout(doLater, waitMilliseconds);
-
-    if (shouldCallNow) {
-      func.apply(context, args);
-    }
-  } as any;
-}
 
 export function throttled(delay: number, fn: Procedure) {
   let lastCall = 0;

@@ -3,7 +3,7 @@ import minimatch from "minimatch";
 import { cpus } from "os";
 import pLimit from "p-limit";
 import * as path from "path";
-import { accessPromised, flattenDeep, lstatPromised, readdirPromised } from "./utils";
+import { flattenDeep, lstatPromised, readdirPromised } from "./utils";
 
 const limit = pLimit(cpus().length / 2);
 async function sizeOfDir(dir: string, options: IOptions, cb: (size: number) => void): Promise<IBlock[]> {
