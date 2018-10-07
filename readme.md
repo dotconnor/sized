@@ -13,5 +13,5 @@ sized .
 | flag | description | usage |
 |------|-------------|-------|
 | --h  | prints out the help screen | `sized --h` |
-| --i [path]  | Adds path glob  | `sized --i node_modules/**/*` |
+| --i [path]  | Adds path glob to ignored list  | `sized --i node_modules/**/*` |
 | --debug  | Shows debugging logs | `sized --debug` |
