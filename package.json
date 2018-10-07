@@ -1,8 +1,9 @@
 {
   "name": "sized",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Calculate the size of files/directories",
   "main": "lib/index.js",
+  "types": "index.d.ts",
   "repository": "dotconnor/sized",
   "author": "Connor Love <connor@dotconnor.com>",
   "license": "MIT",
@@ -15,7 +16,8 @@
   },
   "files": [
     "bin/*",
-    "lib/*"
+    "lib/*",
+    "index.d.ts"
   ],
   "dependencies": {
     "@types/minimatch": "^3.0.3",
