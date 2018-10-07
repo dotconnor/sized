@@ -27,10 +27,10 @@
 ## Your Environment
 <!--- Include as many relevant details about the environment you experienced the bug in -->
 * Versions:
-| | |
-| -------------- | ---- |
-| node --version |      |
-| npm --version  |      |
-| sized --h      |      |
+
+|   node --version   |  v2.0.0  |
+|--------------------|----------|
+| **npm --version**  |**v2.0.0**|
+|   **sized --h**    |**v2.0.0**|
 
 * Operating System and version:
