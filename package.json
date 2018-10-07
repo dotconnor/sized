@@ -1,6 +1,6 @@
 {
   "name": "sized",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Calculate the size of files/directories",
   "main": "lib/index.js",
   "types": "index.d.ts",
@@ -15,8 +15,8 @@
     "build": "tsc"
   },
   "files": [
-    "bin/*",
-    "lib/*",
+    "bin/**/*",
+    "lib/**/*",
     "index.d.ts"
   ],
   "dependencies": {
