@@ -4,6 +4,7 @@ import ora from "ora";
 import { cpus } from "os";
 import * as path from "path";
 import updateNotifier from "update-notifier";
+import {IOptions} from "../index";
 import sized from "./index";
 import { humanFileSize, throttled } from "./utils";
 if (process.platform === "win32") {
