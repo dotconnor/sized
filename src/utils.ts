@@ -1,8 +1,8 @@
 import { access, lstat, PathLike, readdir, Stats } from "fs";
 
-export function lstatPromised(path: PathLike): Promise<Stats> {
+function promisify<T>(func: (...args: any[]) => void, path: PathLike): Promise<T> {
   return new Promise((resolve, reject) => {
-    lstat(path, (err, data) => {
+    func(path, (err: any, data: any) => {
       if (err) {
         return reject(err);
       }
@@ -11,15 +11,12 @@ export function lstatPromised(path: PathLike): Promise<Stats> {
   });
 }
 
+export function lstatPromised(path: PathLike): Promise<Stats> {
+  return promisify(lstat, path);
+}
+
 export function readdirPromised(path: PathLike): Promise<string[]> {
-  return new Promise((resolve, reject) => {
-    readdir(path, (err, data) => {
-      if (err) {
-        return reject(err);
-      }
-      return resolve(data);
-    });
-  });
+  return promisify(readdir, path);
 }
 
 export function humanFileSize(bytes: number, si: boolean = true): string {
