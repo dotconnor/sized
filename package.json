@@ -1,13 +1,13 @@
 {
-  "name": "size-of",
-  "version": "1.0.0",
+  "name": "sized",
+  "version": "1.0.1",
   "description": "Calculate the size of files/directories",
   "main": "lib/index.js",
-  "repository": "https://github.com/dotconnor/size-of",
+  "repository": "dotconnor/sized",
   "author": "Connor Love <connor@dotconnor.com>",
   "license": "MIT",
   "bin": {
-    "sizeof": "bin/sizeof"
+    "sized": "bin/sized"
   },
   "scripts": {
     "prepare": "yarn build",
