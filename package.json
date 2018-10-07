@@ -1,6 +1,6 @@
 {
   "name": "sized",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Calculate the size of files/directories",
   "main": "lib/index.js",
   "repository": "dotconnor/sized",
