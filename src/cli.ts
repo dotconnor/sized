@@ -105,7 +105,7 @@ if (!dir) {
     console.log(`  Total Size:   \x1b[32m${humanFileSize(totalSize)}\x1b[0m`);
     console.log(`  Total Files:  \x1b[34m\x1b[1m${data.length}\x1b[0m`);
     console.log(`  Took:         \x1b[31m\x1b[1m${time}ms\x1b[0m`);
-    updateNotifier({settings}).notify();
+    updateNotifier({pkg: settings}).notify();
     process.exit();
   }).catch((err) => {
     if (options.debug) {
