@@ -7,3 +7,4 @@ cache:
     - node_modules
 after_success:
   - codecov
+  - codacy-coverage
