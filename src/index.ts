@@ -5,7 +5,7 @@ import pLimit from "p-limit";
 import * as path from "path";
 import { flattenDeep, lstatPromised, readdirPromised } from "./utils";
 
-const limit = pLimit(cpus().length / 2);
+const limit = pLimit(cpus().length);
 async function sizeOfDir(dir: string, options: IOptions, cb: (size: number) => void): Promise<IBlock[]> {
   let files = await readdirPromised(dir);
   files = files.map((file) => path.join(dir, file));
