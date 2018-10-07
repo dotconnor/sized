@@ -29,6 +29,7 @@
     "p-limit": "^2.0.0"
   },
   "devDependencies": {
+    "codecov": "^3.1.0",
     "jest": "^23.6.0",
     "tslint": "^5.11.0",
     "typescript": "^3.1.1"
