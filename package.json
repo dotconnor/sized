@@ -1,6 +1,6 @@
 {
   "name": "sized",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Calculate the size of files/directories",
   "main": "lib/index.js",
   "repository": "dotconnor/sized",
@@ -20,8 +20,7 @@
     "clean": "rm -rf ./lib/*",
     "build": "yarn clean && tsc",
     "test": "jest",
-    "lint": "tslint --project .",
-    "postpublish": "git push origin --tags"
+    "lint": "tslint --project ."
   },
   "files": [
     "bin/**/*",
