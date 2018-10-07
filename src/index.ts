@@ -21,7 +21,9 @@ async function sizeOfDir(dir: string, options: IOptions, cb: (size: number) => v
   });
   data = data.filter((p) => {
     if (!p.stat.isDirectory()) {
-      cb(p.stat.size);
+      if (cb) {
+        cb(p.stat.size);
+      }
       blocks.push({path: p.path, size: p.stat.size});
       return false;
     }
