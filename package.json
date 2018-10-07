@@ -10,6 +10,12 @@
   "bin": {
     "sized": "bin/sized"
   },
+  "keywords": [
+    "file",
+    "files",
+    "size",
+    "cli"
+  ],
   "scripts": {
     "prepare": "yarn build",
     "clean": "rm -rf ./lib/*",
