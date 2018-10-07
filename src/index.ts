@@ -9,11 +9,9 @@ const limit = pLimit(cpus().length / 2);
 async function sizeOfDir(dir: string, options: IOptions, cb: (size: number) => void): Promise<IBlock[]> {
   let files = await readdirPromised(dir);
   files = files.map((file) => path.join(dir, file));
-  if (options && options.ignore) {
-    files = files.filter((file) => {
-      return !options.ignore.some((ignore) => minimatch(file, ignore, {matchBase: true}));
-    });
-  }
+  files = files.filter((file) => {
+    return !options.ignore.some((ignore) => minimatch(file, ignore, {matchBase: true}));
+  });
   let blocks: IBlock[] = [];
   const stats = await Promise.all(files.map((file) => limit(lstatPromised, file)));
   let data = files.map((file, i) => {
@@ -34,10 +32,14 @@ async function sizeOfDir(dir: string, options: IOptions, cb: (size: number) => v
   return blocks;
 }
 async function sized(dir: string, options: IOptions, cb: (size: number) => void): Promise<IBlock[]> {
+  const opts: IOptions = Object.assign({
+    debug: false,
+    ignore: [],
+  }, options);
   let blocks: IBlock[] = [];
   const stat = await lstatPromised(dir);
   if (stat.isDirectory()) {
-    blocks = blocks.concat(await sizeOfDir(dir, options, cb));
+    blocks = blocks.concat(await sizeOfDir(dir, opts, cb));
   } else {
     blocks.push({
       path: dir,

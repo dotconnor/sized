@@ -1,6 +1,6 @@
 {
   "name": "sized",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Calculate the size of files/directories",
   "main": "lib/index.js",
   "types": "index.d.ts",
@@ -14,7 +14,7 @@
     "prepare": "yarn build",
     "clean": "rm -rf ./lib/*",
     "build": "yarn clean && tsc",
-    "test": "yarn build && jest",
+    "test": "jest",
     "lint": "tslint --project ."
   },
   "files": [
@@ -41,6 +41,7 @@
   },
   "jest": {
     "preset": "ts-jest",
-    "collectCoverage": true
+    "collectCoverage": true,
+    "verbose": true
   }
 }
