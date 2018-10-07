@@ -5,7 +5,16 @@ import { cpus } from "os";
 import * as path from "path";
 import sized from "./index";
 import { humanFileSize, throttled } from "./utils";
-require("./win");  // tslint:disable-line
+if (process.platform === "win32") {
+  const rl = require("readline").createInterface({ // tslint:disable-line
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  rl.on("SIGINT", () => {
+    (process as any).emit("SIGINT");
+  });
+}
 const argv = process.argv.slice(2);
 const toggles = [
   "h",

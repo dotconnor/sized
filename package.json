@@ -12,8 +12,9 @@
   },
   "scripts": {
     "prepare": "yarn build",
-    "build": "tsc",
-    "test": "jest",
+    "clean": "rm -rf ./lib/*",
+    "build": "yarn clean && tsc",
+    "test": "yarn build && jest",
     "lint": "tslint --project ."
   },
   "files": [
