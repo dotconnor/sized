@@ -43,17 +43,17 @@ describe("byte size formatter", () => {
 });
 test("throttled", async () => {
   let i = 0;
-  const fn = throttled(100, () => { i += 1; });
+  const fn = throttled(200, () => { i += 1; });
   const a = setInterval(() => {
     fn();
-  }, 50);
+  }, 100);
   await new Promise((resolve) => {
     setTimeout(() => {
       clearInterval(a);
       resolve();
     }, 1000);
   });
-  expect(i).toBe(10);
+  expect(i).toBe(5);
 });
 
 describe("failed fs", async () => {
