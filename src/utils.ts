@@ -1,4 +1,6 @@
 import { access, lstat, PathLike, readdir, Stats } from "fs";
+import { IBlock } from "../index";
+import { relative } from "path";
 
 function promisify<T>(
   func: (...args: any[]) => void,
@@ -44,16 +46,98 @@ export function flattenDeep(arr: any[]): any[] {
   );
 }
 
-export type Procedure = (...args: any[]) => void;
+export function humanNumbers(value: number): string {
+  let newValue = value;
+  const suffixes = [``, `K`, `M`, `B`, `T`];
+  let suffixNum = 0;
+  while (newValue >= 1000) {
+    newValue /= 1000;
+    suffixNum++;
+  }
 
-export function throttled(delay: number, fn: Procedure): Procedure {
-  let lastCall = 0;
-  return function k(...args: any[]): any {
-    const now = new Date().getTime();
-    if (now - lastCall < delay) {
-      return undefined;
-    }
-    lastCall = now;
-    return fn(...args);
-  };
+  let num = newValue.toPrecision(3);
+
+  num = `${num} ${suffixes[suffixNum]}`;
+  return num;
+}
+
+export function humanTime(time: number): string {
+  const units = [`s`, `m`];
+  if (Math.abs(time) < 1000) {
+    return `${time} ms`;
+  }
+  let u = -1;
+  do {
+    time /= 1000;
+    ++u;
+  } while (Math.abs(time) >= 1000 && u < units.length - 1);
+  return `${time.toFixed(1)} ${units[u]}`;
+}
+export function getLengthOfBlock(block: IBlock): number {
+  if (block.type === `file` || !block.children) {
+    return 1;
+  }
+  return block.children.reduce((a, b) => {
+    return a + (b.type === `dir` ? getLengthOfBlock(b) : 1);
+  }, 0);
+}
+function pad(num: number) {
+  return new Array(num + 1).fill(` `).join(``);
+}
+
+function colorPath(block: IBlock, dir: string): string {
+  let s = ``;
+  if (block.type === `dir`) {
+    s += `\x1b[34m\x1b[1m`;
+  } else {
+    s += `\x1b[31m\x1b[1m`;
+  }
+  s += `${relative(dir, block.path)}${block.type === `dir` ? `/` : ``}\x1b[0m`;
+  return s;
+}
+
+function getPadding(blocks: IBlock[], dir: string, depth: number) {
+  return Math.max(
+    ...blocks.map((block) => {
+      let a = [relative(dir, block.path).length];
+      if (depth > 1 && block.type === `dir` && block.children) {
+        a = a.concat(getPadding(block.children, block.path, depth - 1));
+      }
+      return Math.max(...a);
+    })
+  );
+}
+
+export function getLargest(
+  blocks: IBlock[],
+  depth: number = 1,
+  inset: number = 0,
+  dir: string = `.`,
+  padding?: number
+) {
+  const root =
+    blocks.length === 1 && blocks[0].type === `dir`
+      ? blocks[0].children!
+      : blocks;
+  const biggest = root.sort((a, b) => b.size - a.size).slice(0, 10);
+  const totalSize = root.reduce((a, b) => {
+    return a + b.size;
+  }, 0);
+  padding = padding || getPadding(biggest, dir, depth);
+  return [
+    ...biggest.map((a) => {
+      let o = `${pad(inset + 1)}${colorPath(a, dir)} ${pad(
+        padding! -
+          depth -
+          (relative(dir, a.path).length + (a.type === `dir` ? 1 : 0))
+      )} ${humanFileSize(a.size)} (${((a.size / totalSize) * 100).toFixed(
+        2
+      )}%)`;
+      if (depth > 1 && a.type === `dir` && a.children) {
+        o += `\n`;
+        o += getLargest(a.children, depth - 1, inset + 2, a.path, padding);
+      }
+      return o;
+    }),
+  ].join(`\n`);
 }

@@ -1,11 +1,19 @@
 const settings = require(`../package.json`); // tslint:disable-line
-import ora from "ora";
+import Ora from "ora";
 import { cpus } from "os";
 import * as path from "path";
+import { argv } from "yargs";
+import logUpdate from "log-update";
 import updateNotifier from "update-notifier";
-import { IOptions } from "../index";
+import { IOptions, IBlock } from "../index";
 import sized from "./index";
-import { humanFileSize, throttled } from "./utils";
+import {
+  humanFileSize,
+  humanNumbers,
+  humanTime,
+  getLargest,
+  getLengthOfBlock,
+} from "./utils";
 if (process.platform === `win32`) {
   const rl = require(`readline`).createInterface({
     // tslint:disable-line
@@ -17,101 +25,107 @@ if (process.platform === `win32`) {
     (process as any).emit(`SIGINT`);
   });
 }
-const argv = process.argv.slice(2);
-const toggles = [`h`, `debug`];
-const opts = [`i`];
+if (argv.h || argv.help) {
+  printHelp();
+}
+
+const dir: string = (argv._[0] as string) || `.`;
+
 const options: IOptions = {
-  debug: false,
+  debug: Boolean(argv.debug) || false,
   ignore: [],
+  limit: cpus().length,
 };
-const args = [];
-let dir = ``;
+if (argv.i) {
+  let i;
+  if (!Array.isArray(argv.i)) {
+    i = [argv.i];
+  } else {
+    // eslint-disable-next-line prefer-destructuring
+    i = argv.i;
+  }
+  options.ignore = options.ignore.concat(i);
+}
+if (argv.ignore) {
+  let i;
+  if (!Array.isArray(argv.ignore)) {
+    i = [argv.ignore];
+  } else {
+    // eslint-disable-next-line prefer-destructuring
+    i = argv.ignore;
+  }
+  options.ignore = options.ignore.concat(i);
+}
+if (argv.c) {
+  if (Number.isInteger(argv.c as number)) {
+    options.limit = argv.c as number;
+  }
+}
+if (argv.depth) {
+  if (Number.isInteger(argv.depth as number)) {
+    options.depth = argv.depth as number;
+  }
+}
 function printHelp() {
   console.log();
   console.log(`\x1b[36msized\x1b[0m ${settings.version}`);
   console.log(`  usage: sized [options] [path]`);
   console.log(`  options:`);
   console.log();
-  console.log(`    --h       \tPrints this screen.`);
-  console.log(`    --debug   \tToggles debug logging.`);
-  console.log(`    --i [glob]\tAdds glob to be ignored.`);
+  console.log(`    -h, --help             Prints this screen.`);
+  console.log(`    --debug                Toggles debug logging.`);
+  console.log(`    -i, --ignore [glob]    Adds glob to be ignored.`);
+  console.log(
+    `    --depth [num]          The number of nested directories to display.`
+  );
+  console.log();
   process.exit(0);
 }
-for (let i = 0; i < argv.length; i += 1) {
-  if (argv[i].startsWith(`--`)) {
-    const t = argv[i].slice(2).split(`=`);
-    if (toggles.indexOf(t[0]) > -1) {
-      if (t[0] === `h`) {
-        printHelp();
-      } else if (t[0] === `d`) {
-        options.debug = true;
-      }
-    } else if (opts.indexOf(t[0]) > -1) {
-      let value;
-      if (t.length === 2) {
-        [, value] = t;
-      } else {
-        if (i === argv.length - 1) {
-          console.log(
-            `\x1b[31m[error]\x1b[0m Was expecting some value after: --${t[0]}`
-          );
-          process.exit(1);
-        } else {
-          value = argv[i + 1];
-          i += 1;
-        }
-        if (t[0] === `i` && value) {
-          options.ignore.push(value);
-        }
-      }
-    } else {
-      console.log(`\x1b[31m[error]\x1b[0m Unknown option: ${t[0]} `);
-      process.exit(1);
-    }
-  } else {
-    dir = argv[i];
-  }
+
+const spinner = Ora({ color: `cyan` });
+process.on(`SIGINT`, () => {
+  spinner.stop();
+  process.exit();
+});
+let currentsize = 0;
+let currentFile = ``;
+function render() {
+  const output = `
+  ${spinner.frame()}  Current Sized:    \x1b[32m${humanFileSize(
+    currentsize
+  )}\x1b[0m
+      Current File:     \x1b[32m${currentFile}\x1b[0m
+  `;
+  logUpdate(output);
 }
-if (!dir) {
-  printHelp();
-} else {
-  const spinner = ora({ color: `cyan` }).start();
-  process.on(`SIGINT`, () => {
-    spinner.stop();
+const cb = (block: IBlock) => {
+  currentsize += block.size;
+  currentFile = path.relative(dir, block.path);
+};
+const start = Date.now();
+
+sized(dir, options, cb)
+  .then((data) => {
+    const time = Date.now() - start;
+    const totalSize = data.reduce((a, b) => {
+      return a + b.size;
+    }, 0);
+    const totalFiles = data.reduce((a, b) => a + getLengthOfBlock(b), 0);
+    clearInterval(clearRender);
+    let output = `
+  \x1b[36msized\x1b[0m - \x1b[33m${path.resolve(dir)}\x1b[0m
+    Total Size:   \x1b[32m${humanFileSize(totalSize)}\x1b[0m
+    Total Files:  \x1b[34m\x1b[1m${humanNumbers(totalFiles)}\x1b[0m
+    Took:         \x1b[31m\x1b[1m${humanTime(time)}\x1b[0m\n\n`;
+    output += getLargest(data, options.depth);
+    output += `\n`;
+    logUpdate(output);
+    updateNotifier({ pkg: settings }).notify();
     process.exit();
+  })
+  .catch((err) => {
+    if (options.debug) {
+      // spinner.stopAndPersist({ text: `\x1b[31m[error]\x1b[0m ${err}` });
+    }
   });
-  let currentsize = 0;
-  const update = throttled(150, () => {
-    spinner.text = `  Current Size: \x1b[32m${humanFileSize(
-      currentsize
-    )}\x1b[0m`;
-  });
-  const cb = (size: number) => {
-    currentsize += size;
-    update();
-  };
-  if (options.debug) {
-    spinner.info(`Limited to ${cpus().length / 2} tasks at a time.`);
-  }
-  const start = Date.now();
-  sized(dir, options, cb)
-    .then((data) => {
-      const time = Date.now() - start;
-      spinner.stop();
-      const totalSize = data.reduce((a, b) => {
-        return a + b.size;
-      }, 0);
-      console.log();
-      console.log(`\x1b[36msized\x1b[0m - \x1b[33m${path.resolve(dir)}\x1b[0m`);
-      console.log(`  Total Size:   \x1b[32m${humanFileSize(totalSize)}\x1b[0m`);
-      console.log(`  Total Files:  \x1b[34m\x1b[1m${data.length}\x1b[0m`);
-      console.log(`  Took:         \x1b[31m\x1b[1m${time}ms\x1b[0m`);
-      updateNotifier({ pkg: settings }).notify();
-      process.exit();
-    })
-    .catch((err) => {
-      if (options.debug) {
-        spinner.stopAndPersist({ text: `\x1b[31m[error]\x1b[0m ${err}` });
-      }
-    });
-}
+const clearRender = setInterval(render, 50);
