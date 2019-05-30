@@ -8,23 +8,31 @@ import { flattenDeep, lstatPromised, readdirPromised } from "./utils";
 
 const limit = pLimit(cpus().length);
 
-async function sizeOfDir(dir: string, options: IOptions, cb: (size: number) => void): Promise<IBlock[]> {
+async function sizeOfDir(
+  dir: string,
+  options: IOptions,
+  cb: (size: number) => void
+): Promise<IBlock[]> {
   let files = await readdirPromised(dir);
   files = files.map((file) => path.join(dir, file));
   files = files.filter((file) => {
-    return !options.ignore.some((ignore) => minimatch(file, ignore, {matchBase: true}));
+    return !options.ignore.some((ignore) =>
+      minimatch(file, ignore, { matchBase: true })
+    );
   });
   let blocks: IBlock[] = [];
-  const stats = await Promise.all(files.map((file) => limit(lstatPromised, file)));
+  const stats = await Promise.all(
+    files.map((file) => limit(lstatPromised, file))
+  );
   let data = files.map((file, i) => {
-    return {path: file, stat: stats[i]};
+    return { path: file, stat: stats[i] };
   });
   data = data.filter((p) => {
     if (!p.stat.isDirectory()) {
       if (cb) {
         cb(p.stat.size);
       }
-      blocks.push({path: p.path, size: p.stat.size});
+      blocks.push({ path: p.path, size: p.stat.size });
       return false;
     }
     return true;
@@ -34,11 +42,18 @@ async function sizeOfDir(dir: string, options: IOptions, cb: (size: number) => v
   return blocks;
 }
 
-async function sized(dir: string, options: IOptions, cb: (size: number) => void): Promise<IBlock[]> {
-  const opts: IOptions = Object.assign({
-    debug: false,
-    ignore: [],
-  }, options);
+async function sized(
+  dir: string,
+  options: IOptions,
+  cb: (size: number) => void
+): Promise<IBlock[]> {
+  const opts: IOptions = Object.assign(
+    {
+      debug: false,
+      ignore: [],
+    },
+    options
+  );
   let blocks: IBlock[] = [];
   const stat = await lstatPromised(dir);
   if (stat.isDirectory()) {

@@ -7,5 +7,9 @@ export interface IOptions {
   ignore: string[];
   debug: boolean;
 }
-declare function sized(dir: string, options: IOptions, cb: (size: number) => void): Promise<IBlock[]>;
+declare function sized(
+  dir: string,
+  options: IOptions,
+  cb: (size: number) => void
+): Promise<IBlock[]>;
 export default sized;

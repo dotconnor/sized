@@ -1,0 +1,15 @@
+{
+  "extends": [
+    "a1motion"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "settings": {
+    "react": {
+      "version": "999"
+    }
+  }
+}
