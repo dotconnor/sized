@@ -16,7 +16,7 @@
     "cli"
   ],
   "scripts": {
-    "prepare": "yarn build",
+    "prepublishOnly": "yarn build",
     "clean": "rm -rf ./lib/*",
     "build": "yarn clean && tsc",
     "test": "ava --verbose",
