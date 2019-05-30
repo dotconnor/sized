@@ -1,7 +1,7 @@
-import crypto = require(`crypto`);
-import fs = require(`fs`);
-import os = require(`os`);
-import path = require(`path`);
+import crypto from "crypto";
+import fs from "fs";
+import os from "os";
+import path from "path";
 
 import sized from "../src";
 
