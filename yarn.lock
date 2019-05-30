@@ -55,9 +55,9 @@
     p-limit "*"
 
 "@types/update-notifier@^2.2.0":
-  version "2.2.0"
-  resolved "https://registry.npmjs.org/@types/update-notifier/-/update-notifier-2.2.0.tgz#a61bd58270247606f77ec388586e53026803c7d9"
-  integrity sha512-QdVXvKa36soA86VI09WCAxLU44udSWFNPDpeXq9pNhZs0Yj2hQcuL4NDGrolD4NY4akjuXgBubjgplGucQ0FJQ==
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/@types/update-notifier/-/update-notifier-2.5.0.tgz#63cfcee92cc915f9a6eea4d1442ec6efd012e118"
+  integrity sha512-YV+ZcSIiv30GhLM7WwxI+bsbcW34d3Yhl2JSFBNFL6qtfsoI9++hogxz+jTqeS86ynKcMUE0AsnLWQynfJnsfA==
 
 abab@^2.0.0:
   version "2.0.0"
