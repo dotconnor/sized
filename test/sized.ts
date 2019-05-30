@@ -5,6 +5,7 @@ import os from "os";
 import path from "path";
 
 import sized from "../src";
+import { IBlock } from "../index";
 
 function guid() {
   function s4() {
@@ -23,7 +24,7 @@ test(`Check to see if it can find file`, async (t) => {
   fs.writeFileSync(path.join(folder, id), crypto.randomBytes(size));
   const r = await sized(
     path.join(folder, id),
-    { ignore: [], debug: false },
+    { ignore: [], debug: false, limit: 1 },
     () => void 0
   );
   t.is(r.length, 1);
@@ -35,7 +36,7 @@ test(`Check to see if it can calculate the correct file size`, async (t) => {
   fs.writeFileSync(path.join(folder, id), crypto.randomBytes(size));
   const r = await sized(
     path.join(folder, id),
-    { ignore: [], debug: false },
+    { ignore: [], debug: false, limit: 1 },
     () => void 0
   );
   t.is(r[0].size, size);
@@ -53,10 +54,11 @@ test(`Check to see if it can find folder`, async (t) => {
   });
   const r = await sized(
     path.join(folder, id),
-    { ignore: [], debug: false },
+    { ignore: [], debug: false, limit: 1 },
     () => void 0
   );
-  t.is(r.length, 4);
+  t.is(r[0].type, `dir`);
+  t.is(r[0].children!.length, 4);
 });
 test(`Check to see if it can calculate folder size`, async (t) => {
   const id = guid();
@@ -71,7 +73,7 @@ test(`Check to see if it can calculate folder size`, async (t) => {
   });
   const r = await sized(
     path.join(folder, id),
-    { ignore: [], debug: false },
+    { ignore: [], debug: false, limit: 1 },
     () => void 0
   );
   t.is(r.reduce((a, b) => a + b.size, 0), sizes.reduce((a, b) => a + b));
@@ -97,10 +99,12 @@ test(`Check to see if it can find nested folder`, async (t) => {
   });
   const r = await sized(
     path.join(folder, id),
-    { ignore: [], debug: false },
+    { ignore: [], debug: false, limit: 1 },
     () => void 0
   );
-  t.is(r.length, 8);
+  t.is(r.length, 1);
+  t.is(r[0].children!.length, 5);
+  t.is(r[0].children![4].children!.length, 4);
 });
 test(`Check to see if it can calculated nested folder size`, async (t) => {
   const id = guid();
@@ -123,7 +127,7 @@ test(`Check to see if it can calculated nested folder size`, async (t) => {
   });
   const r = await sized(
     path.join(folder, id),
-    { ignore: [], debug: false },
+    { ignore: [], debug: false, limit: 1 },
     () => void 0
   );
   t.is(r.reduce((a, b) => a + b.size, 0), sizes.reduce((a, b) => a + b) * 2);
@@ -141,11 +145,15 @@ test(`Check to see if runs callback`, async (t) => {
   });
   let i = 0;
   let k = 0;
-  const fn = (size: any) => {
-    i += size;
+  const fn = (block: IBlock) => {
+    i += block.size;
     k++;
   };
-  await sized(path.join(folder, id), { ignore: [], debug: false }, fn);
+  await sized(
+    path.join(folder, id),
+    { ignore: [], debug: false, limit: 1 },
+    fn
+  );
   t.is(i, sizes.reduce((a, b) => a + b));
   t.is(k, 4);
 });
@@ -160,7 +168,7 @@ test(`Check to see if it can ignore a file`, async (t) => {
   });
   const r = await sized(
     path.join(folder, id),
-    { ignore: [ids[1]], debug: false },
+    { ignore: [ids[1]], debug: false, limit: 1 },
     () => void 0
   );
   t.is(r.length, 1);
