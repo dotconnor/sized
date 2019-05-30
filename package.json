@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "@types/minimatch": "^3.0.3",
-    "@types/node": "^10.11.4",
+    "@types/node": "^12.0.3",
     "@types/ora": "^3.2.0",
     "@types/p-limit": "^2.0.0",
     "@types/update-notifier": "^2.2.0",
