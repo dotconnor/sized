@@ -5,7 +5,9 @@ import pLimit from "p-limit";
 import * as path from "path";
 import { IBlock, IOptions } from "../index";
 import { flattenDeep, lstatPromised, readdirPromised } from "./utils";
+
 const limit = pLimit(cpus().length);
+
 async function sizeOfDir(dir: string, options: IOptions, cb: (size: number) => void): Promise<IBlock[]> {
   let files = await readdirPromised(dir);
   files = files.map((file) => path.join(dir, file));
@@ -31,6 +33,7 @@ async function sizeOfDir(dir: string, options: IOptions, cb: (size: number) => v
   blocks = blocks.concat(flattenDeep(t));
   return blocks;
 }
+
 async function sized(dir: string, options: IOptions, cb: (size: number) => void): Promise<IBlock[]> {
   const opts: IOptions = Object.assign({
     debug: false,
