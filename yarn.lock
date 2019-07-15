@@ -1977,32 +1977,32 @@ escodegen@^1.9.1:
     source-map "~0.6.1"
 
 eslint-config-a1motion@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-a1motion/-/eslint-config-a1motion-1.2.0.tgz#570378e3a74c550a62edd17abcbc95021300fe48"
-  integrity sha512-Milmp/dx3+ZL3/sEy434ifMAa1fq6Ts3l147e+4t+bCsUQBM66XPprI4O90VLhet2YLXkH0HwTU+KV99OMCxMA==
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/eslint-config-a1motion/-/eslint-config-a1motion-1.2.1.tgz#b1276d4e1b92241fefb2c318cf4eed4c3f7986d8"
+  integrity sha512-e4liJ2HOYd52L3sYNdEBM1Zvj90yHHerSG/4DK69UmxegQgyBTA2wsZifpq1c2bGeFUydAeUAUU59QNUUNiH/w==
   dependencies:
     babel-eslint "^10.0.1"
     eslint "^5.12.1"
-    eslint-config-prettier "^4.0.0"
-    eslint-plugin-prettier "^3.0.1"
-    eslint-plugin-react "^7.12.4"
-    prettier "^1.16.1"
+    eslint-config-prettier "^4.3.0"
+    eslint-plugin-prettier "^3.1.0"
+    eslint-plugin-react "^7.13.0"
+    prettier "^1.17.1"
 
-eslint-config-prettier@^4.0.0:
+eslint-config-prettier@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-4.3.0.tgz#c55c1fcac8ce4518aeb77906984e134d9eb5a4f0"
   integrity sha512-sZwhSTHVVz78+kYD3t5pCWSYEdVSBR0PXnwjDRsUs8ytIrK8PLXw+6FKp8r3Z7rx4ZszdetWlXYKOHoUrrwPlA==
   dependencies:
     get-stdin "^6.0.0"
 
-eslint-plugin-prettier@^3.0.1:
+eslint-plugin-prettier@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-prettier/-/eslint-plugin-prettier-3.1.0.tgz#8695188f95daa93b0dc54b249347ca3b79c4686d"
   integrity sha512-XWX2yVuwVNLOUhQijAkXz+rMPPoCr7WFiAl8ig6I7Xn+pPVhDhzg4DxHpmbeb0iqjO9UronEA3Tb09ChnFVHHA==
   dependencies:
     prettier-linter-helpers "^1.0.0"
 
-eslint-plugin-react@^7.12.4:
+eslint-plugin-react@^7.13.0:
   version "7.13.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.13.0.tgz#bc13fd7101de67996ea51b33873cd9dc2b7e5758"
   integrity sha512-uA5LrHylu8lW/eAH3bEQe9YdzpPaFd9yAJTwTi/i/BKTD7j6aQMKVAdGM/ML72zD6womuSK7EiGtMKuK06lWjQ==
@@ -5159,7 +5159,7 @@ prettier-linter-helpers@^1.0.0:
   dependencies:
     fast-diff "^1.1.2"
 
-prettier@^1.16.1:
+prettier@^1.17.1:
   version "1.17.1"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.17.1.tgz#ed64b4e93e370cb8a25b9ef7fef3e4fd1c0995db"
   integrity sha512-TzGRNvuUSmPgwivDqkZ9tM/qTGW9hqDKWOE9YHiyQdixlKbv7kvEqsmDPrcHJTKwthU774TQwZXVtaQ/mMsvjg==
