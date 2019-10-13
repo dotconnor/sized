@@ -3,19 +3,21 @@ import crypto from "crypto";
 import fs from "fs";
 import os from "os";
 import path from "path";
-
 import sized from "../src";
 import { IBlock } from "../index";
 
-function guid() {
-  function s4() {
+function guid(): string {
+  function s4(): string {
     return Math.floor((1 + Math.random()) * 0x10000)
       .toString(16)
       .substring(1);
   }
+
   return `${s4()}${s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`;
 }
-const getFolder = () => fs.mkdtempSync(path.join(os.tmpdir(), `sized-`));
+
+const getFolder = (): string =>
+  fs.mkdtempSync(path.join(os.tmpdir(), `sized-`));
 
 test(`Check to see if it can find file`, async (t) => {
   const id = guid();
@@ -145,10 +147,11 @@ test(`Check to see if runs callback`, async (t) => {
   });
   let i = 0;
   let k = 0;
-  const fn = (block: IBlock) => {
+  const fn = (block: IBlock): void => {
     i += block.size;
     k++;
   };
+
   await sized(
     path.join(folder, id),
     { ignore: [], debug: false, limit: 1 },

@@ -1,10 +1,8 @@
-import { Stats } from "fs";
-import { inspect } from "util";
 import minimatch from "minimatch";
 import pLimit from "p-limit";
 import * as path from "path";
 import { IBlock, IOptions } from "../index";
-import { flattenDeep, lstatPromised, readdirPromised } from "./utils";
+import { lstatPromised, readdirPromised } from "./utils";
 
 async function sizeOfDir(
   dir: string,
@@ -37,9 +35,11 @@ async function sizeOfDir(
       if (cb) {
         cb({ path: p.path, size: p.stat.size, type: `file` });
       }
+
       blocks.push({ path: p.path, size: p.stat.size, type: `file` });
       return false;
     }
+
     return true;
   });
   const t = await Promise.all(
@@ -78,6 +78,7 @@ async function sized(
       type: `file`,
     });
   }
+
   return blocks;
 }
 export = sized;

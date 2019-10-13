@@ -1,4 +1,4 @@
-import { access, lstat, PathLike, readdir, Stats } from "fs";
+import { lstat, PathLike, readdir, Stats } from "fs";
 import { IBlock } from "../index";
 import { relative } from "path";
 
@@ -11,6 +11,7 @@ function promisify<T>(
       if (err) {
         return reject(err);
       }
+
       return resolve(data);
     });
   });
@@ -29,6 +30,7 @@ export function humanFileSize(bytes: number, si: boolean = true): string {
   if (Math.abs(bytes) < thresh) {
     return `${bytes} B`;
   }
+
   const units = si
     ? [`kB`, `MB`, `GB`, `TB`, `PB`, `EB`, `ZB`, `YB`]
     : [`KiB`, `MiB`, `GiB`, `TiB`, `PiB`, `EiB`, `ZiB`, `YiB`];
@@ -37,8 +39,10 @@ export function humanFileSize(bytes: number, si: boolean = true): string {
     bytes /= thresh;
     ++u;
   } while (Math.abs(bytes) >= thresh && u < units.length - 1);
+
   return `${bytes.toFixed(1)} ${units[u]}`;
 }
+
 export function flattenDeep(arr: any[]): any[] {
   return arr.reduce(
     (acc, e) => (Array.isArray(e) ? acc.concat(flattenDeep(e)) : acc.concat(e)),
@@ -66,22 +70,27 @@ export function humanTime(time: number): string {
   if (Math.abs(time) < 1000) {
     return `${time} ms`;
   }
+
   let u = -1;
   do {
     time /= 1000;
     ++u;
   } while (Math.abs(time) >= 1000 && u < units.length - 1);
+
   return `${time.toFixed(1)} ${units[u]}`;
 }
+
 export function getLengthOfBlock(block: IBlock): number {
   if (block.type === `file` || !block.children) {
     return 1;
   }
+
   return block.children.reduce((a, b) => {
     return a + (b.type === `dir` ? getLengthOfBlock(b) : 1);
   }, 0);
 }
-function pad(num: number) {
+
+function pad(num: number): string {
   return new Array(num + 1).fill(` `).join(``);
 }
 
@@ -92,17 +101,19 @@ function colorPath(block: IBlock, dir: string): string {
   } else {
     s += `\x1b[31m\x1b[1m`;
   }
+
   s += `${relative(dir, block.path)}${block.type === `dir` ? `/` : ``}\x1b[0m`;
   return s;
 }
 
-function getPadding(blocks: IBlock[], dir: string, depth: number) {
+function getPadding(blocks: IBlock[], dir: string, depth: number): number {
   return Math.max(
     ...blocks.map((block) => {
       let a = [relative(dir, block.path).length];
       if (depth > 1 && block.type === `dir` && block.children) {
         a = a.concat(getPadding(block.children, block.path, depth - 1));
       }
+
       return Math.max(...a);
     })
   );
@@ -114,7 +125,7 @@ export function getLargest(
   inset: number = 0,
   dir: string = `.`,
   padding?: number
-) {
+): string {
   const root =
     blocks.length === 1 && blocks[0].type === `dir`
       ? blocks[0].children!
@@ -137,6 +148,7 @@ export function getLargest(
         o += `\n`;
         o += getLargest(a.children, depth - 1, inset + 2, a.path, padding);
       }
+
       return o;
     }),
   ].join(`\n`);

@@ -5,12 +5,14 @@ export interface IBlock {
   children?: IBlock[];
   size: number;
 }
+
 export interface IOptions {
   ignore: string[];
   debug: boolean;
   limit: number;
   depth?: number;
 }
+
 declare function sized(
   dir: string,
   options: IOptions,
