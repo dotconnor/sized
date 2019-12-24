@@ -63,6 +63,9 @@ async function sized(
     },
     options
   );
+  /**
+   * Limit the number of concurrent file system reads to perform.
+   */
   const limit = pLimit(opts.limit);
   let blocks: IBlock[] = [];
   const stat = await lstatPromised(dir);

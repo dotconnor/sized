@@ -140,7 +140,8 @@ export function getLargest(
       let o = `${pad(inset + 1)}${colorPath(a, dir)} ${pad(
         padding! -
           depth -
-          (relative(dir, a.path).length + (a.type === `dir` ? 1 : 0))
+          relative(dir, a.path).length +
+          (a.type === `dir` ? 0 : 1)
       )} ${humanFileSize(a.size)} (${((a.size / totalSize) * 100).toFixed(
         2
       )}%)`;
