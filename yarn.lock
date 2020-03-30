@@ -2290,9 +2290,9 @@ escodegen@^1.9.1:
     source-map "~0.6.1"
 
 eslint-config-a1motion@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-a1motion/-/eslint-config-a1motion-3.1.0.tgz#7014837bcc542f4c6c9ed525043cc0975f1c1836"
-  integrity sha512-ks0GW2WHkKYLB7Sy9GLegTL5/ltJBh4mp+JgMZDM7yxcDRzVJuwQuB6+lGJmhWFEaDiXks0VG5+/WBFjI4QQlw==
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/eslint-config-a1motion/-/eslint-config-a1motion-3.2.1.tgz#a6d186841f9c20e4229b2af4d0f7041ed1c06a0d"
+  integrity sha512-bR79ylgwEMYsK1fKf+K2SQ8BXQyiigTPByFWxtlkt4Tkb+O/NepiSAu/o0O5cJ1X4aW1Ni4ffbADRCvsqg5YkQ==
 
 eslint-config-prettier@^6.7.0:
   version "6.7.0"
