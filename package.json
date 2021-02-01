@@ -35,7 +35,7 @@
     "minimatch": "^3.0.4",
     "ora": "^4.0.3",
     "p-limit": "^2.2.1",
-    "update-notifier": "^4.0.0",
+    "update-notifier": "^5.1.0",
     "yargs": "^15.0.2"
   },
   "devDependencies": {
